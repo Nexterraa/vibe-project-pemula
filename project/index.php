@@ -174,24 +174,6 @@ include 'includes/header.php';
   </div>
 </section>
 
-<!-- ══════════ PROMO BANNER ══════════ -->
-<section class="py-4">
-  <div class="container fade-in-section">
-    <div class="promo-banner">
-      <div class="row align-items-center g-3">
-        <div class="col-md-8">
-          <h3 class="text-white fw-800 mb-1">🥦 Diskon 20% untuk Pembelian Pertama!</h3>
-          <p class="text-white mb-0 opacity-90">Gunakan kode promo: <strong style="background:rgba(255,255,255,.25);padding:2px 10px;border-radius:6px;">SAYURSEGAR</strong> saat checkout.</p>
-        </div>
-        <div class="col-md-4 text-md-end">
-          <a href="<?= BASE_URL ?>/products.php" class="btn btn-light fw-700 px-4 py-2">
-            <i class="fas fa-tag me-2"></i>Belanja Sekarang
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ══════════ TESTIMONIALS ══════════ -->
 <section class="py-5" style="background:var(--green-50);">

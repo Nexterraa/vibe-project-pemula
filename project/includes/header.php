@@ -90,13 +90,6 @@ $cats = $pdo->query('SELECT * FROM categories ORDER BY name')->fetchAll();
         </li>
       </ul>
 
-      <!-- Search Bar -->
-      <form class="d-flex search-form me-3" action="<?= BASE_URL ?>/products.php" method="GET">
-        <div class="input-group">
-          <input class="form-control search-input" type="search" name="q" placeholder="Cari sayur..." value="<?= isset($_GET['q']) ? e($_GET['q']) : '' ?>" aria-label="Cari">
-          <button class="btn btn-search" type="submit"><i class="fas fa-search"></i></button>
-        </div>
-      </form>
 
       <!-- Cart & Auth -->
       <div class="d-flex align-items-center gap-2">
