@@ -10,7 +10,8 @@ if (empty($cart)) { header('Location: ' . BASE_URL . '/cart.php'); exit; }
 
 $user = getCurrentUser();
 $cartTotal = getCartTotal();
-$shippingFee = 10000;
+$freeShippingMin = 150000;
+$shippingFee = ($cartTotal >= $freeShippingMin) ? 0 : 10000;
 $grandTotal  = $cartTotal + $shippingFee;
 
 include 'includes/header.php';
@@ -75,6 +76,27 @@ include 'includes/header.php';
               </label>
             </div>
           </div>
+
+          <!-- Info Rekening (muncul saat Transfer dipilih) -->
+          <div id="transferInfo" class="mt-3" style="display:none; transition: all 0.3s ease;">
+            <div class="border rounded-3 p-3" style="background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);">
+              <h6 class="fw-700 text-success mb-3"><i class="fas fa-university me-2"></i>Informasi Rekening Tujuan</h6>
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Bank</span>
+                <strong>BCA</strong>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">No. Rekening</span>
+                <strong class="font-monospace" style="letter-spacing:1px;">1234567890</strong>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Atas Nama</span>
+                <strong>Toko Sayur Online</strong>
+              </div>
+              <hr>
+              <small class="text-muted"><i class="fas fa-info-circle me-1"></i>Setelah checkout, Anda akan diminta upload bukti transfer.</small>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -106,13 +128,28 @@ include 'includes/header.php';
             </table>
           </div>
           <div class="border-top pt-3">
+            <?php if ($cartTotal >= $freeShippingMin): ?>
+            <div class="alert alert-success py-2 px-3 mb-3 small d-flex align-items-center gap-2">
+              <i class="fas fa-truck"></i>
+              <span><strong>Selamat!</strong> Kamu mendapatkan <strong>gratis ongkir</strong> karena belanja di atas <?= rupiah($freeShippingMin) ?>.</span>
+            </div>
+            <?php else: ?>
+            <div class="alert alert-warning py-2 px-3 mb-3 small d-flex align-items-center gap-2">
+              <i class="fas fa-info-circle"></i>
+              <span>Tambah belanja <strong><?= rupiah($freeShippingMin - $cartTotal) ?></strong> lagi untuk gratis ongkir!</span>
+            </div>
+            <?php endif; ?>
             <div class="d-flex justify-content-between mb-2 small">
               <span class="text-muted">Subtotal</span>
               <span class="fw-600"><?= rupiah($cartTotal) ?></span>
             </div>
             <div class="d-flex justify-content-between mb-3 small">
               <span class="text-muted">Ongkos Kirim</span>
+              <?php if ($shippingFee == 0): ?>
+              <span class="fw-600 text-success"><s class="text-muted me-1"><?= rupiah(10000) ?></s> Gratis</span>
+              <?php else: ?>
               <span class="fw-600"><?= rupiah($shippingFee) ?></span>
+              <?php endif; ?>
             </div>
             <div class="d-flex justify-content-between fw-800" style="font-size:1.15rem;">
               <span>Total Bayar</span>
@@ -130,6 +167,21 @@ include 'includes/header.php';
 </div>
 
 <script>
+// Toggle info rekening
+const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
+const transferInfo = document.getElementById('transferInfo');
+paymentRadios.forEach(radio => {
+  radio.addEventListener('change', function() {
+    if (this.value === 'transfer') {
+      transferInfo.style.display = 'block';
+      setTimeout(() => transferInfo.style.opacity = '1', 10);
+    } else {
+      transferInfo.style.opacity = '0';
+      setTimeout(() => transferInfo.style.display = 'none', 300);
+    }
+  });
+});
+
 document.getElementById('checkoutForm').addEventListener('submit', function() {
   const btn = document.getElementById('submitOrder');
   btn.disabled = true;

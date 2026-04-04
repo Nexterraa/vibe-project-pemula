@@ -16,11 +16,11 @@ if (empty($cart)) {
     exit;
 }
 
-$name    = trim($_POST['shipping_name'] ?? '');
-$phone   = trim($_POST['shipping_phone'] ?? '');
+$name = trim($_POST['shipping_name'] ?? '');
+$phone = trim($_POST['shipping_phone'] ?? '');
 $address = trim($_POST['shipping_address'] ?? '');
-$notes   = trim($_POST['notes'] ?? '');
-$payment = in_array($_POST['payment_method'] ?? '', ['cod','transfer']) ? $_POST['payment_method'] : 'cod';
+$notes = trim($_POST['notes'] ?? '');
+$payment = in_array($_POST['payment_method'] ?? '', ['cod', 'transfer']) ? $_POST['payment_method'] : 'cod';
 
 if (empty($name) || empty($phone) || empty($address)) {
     setFlash('danger', 'Lengkapi semua data pengiriman.');
@@ -28,13 +28,14 @@ if (empty($name) || empty($phone) || empty($address)) {
     exit;
 }
 
-$shippingFee = 10000;
 $total = 0;
 foreach ($cart as $item) {
     $total += $item['price'] * $item['qty'];
 }
+$freeShippingMin = 150000;
+$shippingFee = ($total >= $freeShippingMin) ? 0 : 10000;
 $grandTotal = $total + $shippingFee;
-$orderCode  = generateOrderCode();
+$orderCode = generateOrderCode();
 
 try {
     $pdo->beginTransaction();
@@ -66,9 +67,14 @@ try {
     // Clear cart
     $_SESSION['cart'] = [];
     $_SESSION['last_order_code'] = $orderCode;
-    $_SESSION['last_order_id']   = $orderId;
+    $_SESSION['last_order_id'] = $orderId;
 
-    header('Location: ' . BASE_URL . '/order_success.php');
+    // Transfer → upload bukti, COD → langsung sukses
+    if ($payment === 'transfer') {
+        header('Location: ' . BASE_URL . '/upload_transfer.php?order_id=' . $orderId);
+    } else {
+        header('Location: ' . BASE_URL . '/order_success.php');
+    }
     exit;
 
 } catch (Exception $e) {

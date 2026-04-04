@@ -14,7 +14,6 @@ include 'includes/header.php';
       <p class="text-muted mb-4" style="line-height:1.8;">Toko Sayur Online lahir dari kecintaan kami terhadap gaya hidup sehat dan keinginan untuk membantu petani lokal menjangkau pembeli langsung. Kami percaya bahwa sayuran segar adalah fondasi kesehatan keluarga Indonesia.</p>
       <div class="d-flex gap-3">
         <a href="<?= BASE_URL ?>/products.php" class="btn btn-success-custom px-4"><i class="fas fa-store me-2"></i>Belanja Sekarang</a>
-        <a href="#contact" class="btn btn-outline-success px-4"><i class="fas fa-envelope me-2"></i>Hubungi Kami</a>
       </div>
     </div>
     <div class="col-md-6 fade-in-section">
@@ -53,27 +52,5 @@ include 'includes/header.php';
     <?php endforeach; ?>
   </div>
 
-  <!-- Contact -->
-  <div id="contact" class="bg-white rounded-4 shadow-sm p-5 fade-in-section">
-    <div class="row align-items-center g-4">
-      <div class="col-md-6">
-        <h3 class="fw-800 mb-3">Hubungi <span class="text-success">Kami</span></h3>
-        <ul class="list-unstyled footer-contact" style="color:var(--text-dark)!important;">
-          <li class="mb-3"><i class="fas fa-map-marker-alt text-success" style="width:20px;"></i> Jl. Sayur Segar No. 1, Jakarta Selatan</li>
-          <li class="mb-3"><i class="fas fa-phone text-success" style="width:20px;"></i> +62 812-3456-7890</li>
-          <li class="mb-3"><i class="fas fa-envelope text-success" style="width:20px;"></i> hello@tokosayur.com</li>
-          <li><i class="fas fa-clock text-success" style="width:20px;"></i> Senin–Minggu, 07.00–20.00 WIB</li>
-        </ul>
-      </div>
-      <div class="col-md-6">
-        <form>
-          <div class="mb-3"><input type="text" class="form-control" placeholder="Nama Anda"></div>
-          <div class="mb-3"><input type="email" class="form-control" placeholder="Email Anda"></div>
-          <div class="mb-3"><textarea class="form-control" rows="3" placeholder="Pesan Anda..."></textarea></div>
-          <button type="submit" class="btn btn-success-custom px-4 fw-600">Kirim Pesan</button>
-        </form>
-      </div>
-    </div>
-  </div>
 </div>
 <?php include 'includes/footer.php'; ?>

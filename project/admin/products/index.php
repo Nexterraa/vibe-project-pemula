@@ -1,20 +1,18 @@
 <?php
-// admin/products/index.php - Product List & Management
+// admin/products/index.php - Manajemen Produk (Simple)
 $pageTitle = 'Manajemen Produk';
 require_once __DIR__ . '/../../config/functions.php';
 startSession(); requireAdmin();
 
 $search = trim($_GET['q'] ?? '');
-$catId  = (int)($_GET['cat'] ?? 0);
-$where  = ['p.is_active = 1'];
+$where  = ['is_active = 1'];
 $params = [];
-if ($search) { $where[] = 'p.name LIKE ?'; $params[] = "%$search%"; }
-if ($catId)  { $where[] = 'p.category_id = ?'; $params[] = $catId; }
+if ($search) { $where[] = 'name LIKE ?'; $params[] = "%$search%"; }
 $whereClause = implode(' AND ', $where);
-$stmt = $pdo->prepare("SELECT p.*, c.name as cat_name FROM products p JOIN categories c ON p.category_id=c.id WHERE $whereClause ORDER BY p.id DESC");
+$stmt = $pdo->prepare("SELECT * FROM products WHERE $whereClause ORDER BY id DESC");
 $stmt->execute($params);
 $products = $stmt->fetchAll();
-$categories = $pdo->query('SELECT * FROM categories ORDER BY name')->fetchAll();
+
 include __DIR__ . '/../includes/header.php';
 ?>
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -24,51 +22,50 @@ include __DIR__ . '/../includes/header.php';
   </a>
 </div>
 
-<!-- Filter Bar -->
+<!-- Search Bar -->
 <div class="admin-card mb-4">
   <div class="p-3">
-    <form method="GET" class="row g-2 align-items-end">
-      <div class="col-sm-5">
-        <input type="text" name="q" class="form-control" placeholder="Cari produk..." value="<?= e($search) ?>">
-      </div>
-      <div class="col-sm-4">
-        <select name="cat" class="form-select">
-          <option value="">Semua Kategori</option>
-          <?php foreach ($categories as $c): ?>
-          <option value="<?= $c['id'] ?>" <?= $catId==$c['id']?'selected':'' ?>><?= e($c['name']) ?></option>
-          <?php endforeach; ?>
-        </select>
-      </div>
-      <div class="col-sm-3 d-flex gap-2">
-        <button type="submit" class="btn btn-success-custom flex-grow-1"><i class="fas fa-search"></i></button>
-        <a href="<?= BASE_URL ?>/admin/products/index.php" class="btn btn-outline-secondary"><i class="fas fa-refresh"></i></a>
-      </div>
+    <form method="GET" class="d-flex gap-2">
+      <input type="text" name="q" class="form-control" placeholder="Cari nama produk sayuran..." value="<?= e($search) ?>">
+      <button type="submit" class="btn btn-success-custom px-4"><i class="fas fa-search"></i></button>
+      <a href="<?= BASE_URL ?>/admin/products/index.php" class="btn btn-outline-secondary"><i class="fas fa-refresh"></i></a>
     </form>
   </div>
 </div>
 
 <div class="admin-card">
   <div class="admin-card-header">
-    <h5><i class="fas fa-list me-2 text-success"></i>Daftar Produk (<?= count($products) ?>)</h5>
+    <h5><i class="fas fa-list me-2 text-success"></i>Daftar Produk Sayur (<?= count($products) ?>)</h5>
   </div>
   <div class="table-responsive">
-    <table class="table admin-table">
+    <table class="table admin-table mb-0">
       <thead>
-        <tr><th>Produk</th><th>Kategori</th><th class="text-end">Harga</th><th class="text-center">Stok</th><th class="text-center">Status</th><th class="text-center">Aksi</th></tr>
+        <tr>
+          <th>No</th>
+          <th>Nama Produk</th>
+          <th class="text-center">Satuan</th>
+          <th class="text-end">Harga</th>
+          <th class="text-center">Stok</th>
+          <th class="text-center">Aksi</th>
+        </tr>
       </thead>
       <tbody>
-        <?php foreach ($products as $p): ?>
+        <?php if (empty($products)): ?>
+        <tr><td colspan="6" class="text-center py-5 text-muted"><i class="fas fa-box-open fs-3 d-block mb-2"></i>Belum ada produk.</td></tr>
+        <?php else: ?>
+        <?php foreach ($products as $i => $p): ?>
         <tr>
+          <td class="text-muted"><?= $i + 1 ?></td>
           <td>
             <div class="d-flex align-items-center gap-3">
-              <img src="<?= getProductImage($p['image']) ?>" style="width:50px;height:42px;object-fit:cover;border-radius:8px;" alt="">
+              <img src="<?= getProductImage($p['image']) ?>" style="width:48px;height:40px;object-fit:cover;border-radius:8px;" alt="">
               <div>
                 <div class="fw-700"><?= e($p['name']) ?></div>
-                <small class="text-muted">/<?= e($p['unit']) ?> <?= $p['is_featured']?'<span class="badge bg-warning text-dark">⭐ Unggulan</span>':'' ?></small>
+                <?php if ($p['is_featured']): ?><small><span class="badge bg-warning text-dark">⭐ Unggulan</span></small><?php endif; ?>
               </div>
             </div>
           </td>
-          <td><span class="badge bg-success-subtle text-success"><?= e($p['cat_name']) ?></span></td>
+          <td class="text-center"><span class="badge bg-secondary"><?= e($p['unit']) ?></span></td>
           <td class="text-end fw-700"><?= rupiah($p['price']) ?></td>
           <td class="text-center">
             <span class="badge <?= $p['stock'] == 0 ? 'bg-danger' : ($p['stock'] < 5 ? 'bg-warning text-dark' : 'bg-success') ?>">
@@ -76,20 +73,13 @@ include __DIR__ . '/../includes/header.php';
             </span>
           </td>
           <td class="text-center">
-            <span class="badge <?= $p['is_active'] ? 'bg-success' : 'bg-secondary' ?>">
-              <?= $p['is_active'] ? 'Aktif' : 'Nonaktif' ?>
-            </span>
-          </td>
-          <td class="text-center">
             <div class="d-flex gap-1 justify-content-center">
               <a href="<?= BASE_URL ?>/admin/products/edit.php?id=<?= $p['id'] ?>" class="btn btn-sm btn-outline-primary" title="Edit"><i class="fas fa-edit"></i></a>
-              <a href="<?= BASE_URL ?>/admin/products/delete.php?id=<?= $p['id'] ?>" class="btn btn-sm btn-outline-danger" title="Hapus" onclick="return confirm('Hapus produk ini?')"><i class="fas fa-trash"></i></a>
+              <a href="<?= BASE_URL ?>/admin/products/delete.php?id=<?= $p['id'] ?>" class="btn btn-sm btn-outline-danger" title="Hapus" onclick="return confirm('Yakin hapus produk ini?')"><i class="fas fa-trash"></i></a>
             </div>
           </td>
         </tr>
         <?php endforeach; ?>
-        <?php if (empty($products)): ?>
-        <tr><td colspan="6" class="text-center py-4 text-muted">Tidak ada produk ditemukan.</td></tr>
         <?php endif; ?>
       </tbody>
     </table>

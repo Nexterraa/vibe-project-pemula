@@ -34,25 +34,19 @@ $adminDir  = basename(dirname($_SERVER['PHP_SELF']));
     <a href="<?= BASE_URL ?>/admin/index.php" class="admin-nav-item <?= ($adminPage==='index.php'&&$adminDir==='admin')?'active':'' ?>">
       <i class="fas fa-gauge"></i> Dashboard
     </a>
-    <div class="admin-nav-label">Manajemen Produk</div>
+    <div class="admin-nav-label">Produk</div>
     <a href="<?= BASE_URL ?>/admin/products/index.php" class="admin-nav-item <?= ($adminDir==='products')?'active':'' ?>">
       <i class="fas fa-box"></i> Produk
     </a>
-    <a href="<?= BASE_URL ?>/admin/categories/index.php" class="admin-nav-item <?= ($adminDir==='categories')?'active':'' ?>">
-      <i class="fas fa-tags"></i> Kategori
-    </a>
     <div class="admin-nav-label">Transaksi</div>
     <a href="<?= BASE_URL ?>/admin/orders/index.php" class="admin-nav-item <?= ($adminDir==='orders')?'active':'' ?>">
-      <i class="fas fa-receipt"></i> Pesanan
+      <i class="fas fa-receipt"></i> Riwayat Pesanan
     </a>
     <div class="admin-nav-label">Pengguna</div>
     <a href="<?= BASE_URL ?>/admin/users/index.php" class="admin-nav-item <?= ($adminDir==='users')?'active':'' ?>">
       <i class="fas fa-users"></i> Pengguna
     </a>
-    <div class="admin-nav-label">Lainnya</div>
-    <a href="<?= BASE_URL ?>/index.php" class="admin-nav-item">
-      <i class="fas fa-store"></i> Lihat Toko
-    </a>
+    <div class="admin-nav-label">Akun</div>
     <a href="<?= BASE_URL ?>/auth/logout.php" class="admin-nav-item" style="color:#ff9999!important;">
       <i class="fas fa-sign-out-alt"></i> Keluar
     </a>
