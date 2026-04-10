@@ -1,6 +1,6 @@
 -- ============================================================
 -- Toko Sayur Online - Database Schema & Seed Data
--- Import via phpMyAdmin atau: mysql -u root -p < toko_sayur.sql
+-- Import via phpMyAdmin atau: mysql -u root -p < toko_sayur2.sql
 -- ============================================================
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -9,8 +9,9 @@ START TRANSACTION;
 SET time_zone = "+07:00";
 
 -- Buat database
-CREATE DATABASE IF NOT EXISTS `toko_sayur` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `toko_sayur`;
+DROP DATABASE IF EXISTS `toko_sayur2`;
+CREATE DATABASE IF NOT EXISTS `toko_sayur2` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `toko_sayur2`;
 
 -- --------------------------------------------------------
 -- Tabel: categories

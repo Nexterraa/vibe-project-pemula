@@ -1,10 +1,10 @@
 -- ============================================================
 -- database_update.sql
 -- Jalankan di phpMyAdmin atau CLI:
---   mysql -u root toko_sayur < database_update.sql
+--   mysql -u root toko_sayur2 < database_update.sql
 -- ============================================================
 
-USE `toko_sayur`;
+USE `toko_sayur2`;
 
 -- 1. Tambah kolom payment_proof untuk menyimpan path bukti transfer
 ALTER TABLE `orders`
