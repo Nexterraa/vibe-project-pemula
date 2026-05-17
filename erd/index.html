@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERD Chen Notation - Toko Sayur Online</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#f8fafc; font-family:'Inter',sans-serif; }
+
+  header {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    padding: 16px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 3px solid #4ade80;
+  }
+  header h1 { color:#fff; font-size:1.3rem; font-weight:700; }
+  header h1 span { color:#4ade80; }
+  header p { color:#94a3b8; font-size:.78rem; margin-top:2px; }
+
+  .legend {
+    display: flex; gap: 20px; flex-wrap: wrap;
+    padding: 12px 32px; background: #fff;
+    border-bottom: 1px solid #e2e8f0;
+    align-items: center;
+  }
+  .legend-title { font-size:.72rem; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:.05em; margin-right:4px; }
+  .leg { display:flex; align-items:center; gap:6px; font-size:.75rem; color:#475569; }
+
+  .erd-wrap {
+    overflow: auto;
+    padding: 24px 32px 48px;
+    background: #f8fafc;
+  }
+
+  .erd-canvas {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,.06);
+    display: inline-block;
+  }
+
+  svg text { font-family: 'Inter', sans-serif; }
+
+  .note {
+    background: #fffbeb; border: 1px solid #fde68a;
+    border-radius: 8px; padding: 10px 20px;
+    font-size: .78rem; color: #92400e;
+    margin: 0 32px 16px; display: inline-flex; align-items: center; gap: 8px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🥦 ERD <span>Toko Sayur Online</span></h1>
+    <p>Chen Notation · 6 Entitas · 6 Relasi · Berdasarkan 10 Langkah Perancangan ERD</p>
+  </div>
+  <div style="text-align:right">
+    <div style="color:#4ade80;font-weight:700;font-size:.9rem;">Database: toko_sayur</div>
+    <div style="color:#64748b;font-size:.75rem;margin-top:2px;">MySQL · PHP</div>
+  </div>
+</header>
+
+<div class="legend">
+  <span class="legend-title">Legenda:</span>
+
+  <div class="leg">
+    <svg width="36" height="20"><rect x="1" y="2" width="34" height="16" rx="3" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2"/></svg>
+    Entitas
+  </div>
+  <div class="leg">
+    <svg width="36" height="22"><rect x="1" y="2" width="34" height="18" rx="3" fill="#ede9fe" stroke="#6d28d9" stroke-width="2"/><rect x="4" y="5" width="28" height="12" rx="2" fill="none" stroke="#6d28d9" stroke-width="1.2"/></svg>
+    Entitas Lemah / Junction
+  </div>
+  <div class="leg">
+    <svg width="40" height="24"><polygon points="20,2 38,12 20,22 2,12" fill="#fef3c7" stroke="#d97706" stroke-width="2"/></svg>
+    Relasi
+  </div>
+  <div class="leg">
+    <svg width="50" height="22"><ellipse cx="25" cy="11" rx="24" ry="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/></svg>
+    Atribut Biasa
+  </div>
+  <div class="leg">
+    <svg width="50" height="22">
+      <ellipse cx="25" cy="11" rx="24" ry="10" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
+      <line x1="7" y1="15" x2="43" y2="15" stroke="#ca8a04" stroke-width="1.8"/>
+    </svg>
+    Kunci Utama (PK)
+  </div>
+  <div class="leg">
+    <svg width="50" height="22"><ellipse cx="25" cy="11" rx="24" ry="10" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="5,3"/></svg>
+    Kunci Tamu (FK)
+  </div>
+  <div class="leg">
+    <svg width="40" height="18">
+      <line x1="2" y1="9" x2="38" y2="9" stroke="#475569" stroke-width="1.5"/>
+      <text x="4" y="8" font-size="9" fill="#1d4ed8" font-weight="700" font-family="Inter">1</text>
+      <text x="30" y="8" font-size="9" fill="#dc2626" font-weight="700" font-family="Inter">N</text>
+    </svg>
+    Kardinalitas
+  </div>
+</div>
+
+<div class="erd-wrap">
+  <div class="erd-canvas">
+  <svg viewBox="0 0 1900 1080" width="1900" height="1080" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- ░░░ BACKGROUND GRID ░░░ -->
+  <defs>
+    <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#f1f5f9" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="1900" height="1080" fill="url(#smallGrid)"/>
+
+  <!-- ==================================================================
+       CONNECTOR LINES — draw FIRST so they appear behind shapes
+       ================================================================== -->
+
+  <!-- ── User ── melakukan ── Orders ── -->
+  <line x1="272" y1="500" x2="330" y2="500" stroke="#475569" stroke-width="1.8"/>
+  <line x1="470" y1="500" x2="530" y2="500" stroke="#475569" stroke-width="1.8"/>
+
+  <!-- ── Orders ── berisi ── Order_Items ── -->
+  <line x1="690" y1="500" x2="740" y2="500" stroke="#475569" stroke-width="1.8"/>
+  <line x1="860" y1="500" x2="910" y2="500" stroke="#475569" stroke-width="1.8"/>
+
+  <!-- ── Order_Items ── merujuk ke ── Products ── -->
+  <line x1="1090" y1="500" x2="1140" y2="500" stroke="#475569" stroke-width="1.8"/>
+  <line x1="1280" y1="500" x2="1330" y2="500" stroke="#475569" stroke-width="1.8"/>
+
+  <!-- ── Products ── termasuk dalam ── Categories (vertikal) ── -->
+  <line x1="1410" y1="478" x2="1410" y2="408" stroke="#475569" stroke-width="1.8"/>
+  <line x1="1410" y1="328" x2="1410" y2="254" stroke="#475569" stroke-width="1.8"/>
+
+  <!-- ── User ── memberi ── Product_Ratings ── -->
+  <!-- Dari User bawah ke memberi kiri -->
+  <polyline points="192,522 192,790 332,830" fill="none" stroke="#475569" stroke-width="1.8"/>
+  <!-- Dari memberi kanan ke Product_Ratings kiri -->
+  <line x1="472" y1="830" x2="620" y2="880" stroke="#475569" stroke-width="1.8"/>
+
+  <!-- ── Products ── dinilai di ── Product_Ratings ── -->
+  <!-- Dari Products bawah ke dinilai kanan -->
+  <polyline points="1410,522 1410,790 1148,830" fill="none" stroke="#475569" stroke-width="1.8"/>
+  <!-- Dari dinilai kiri ke Product_Ratings kanan -->
+  <line x1="1008" y1="830" x2="820" y2="880" stroke="#475569" stroke-width="1.8"/>
+
+
+  <!-- ==================================================================
+       ATTRIBUTE CONNECTOR LINES (thinner, lighter)
+       ================================================================== -->
+
+  <!-- USER attrs -->
+  <line x1="182" y1="478" x2="105"  y2="388" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="192" y1="478" x2="192"  y2="388" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="205" y1="479" x2="318"  y2="395" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="132" y1="493" x2="48"   y2="468" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="252" y1="492" x2="362"  y2="462" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="132" y1="508" x2="48"   y2="558" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="192" y1="522" x2="192"  y2="598" stroke="#94a3b8" stroke-width="1.1"/>
+
+  <!-- ORDERS attrs -->
+  <line x1="548" y1="479" x2="448"  y2="378" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="610" y1="478" x2="610"  y2="378" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="668" y1="479" x2="748"  y2="378" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="530" y1="490" x2="445"  y2="458" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="688" y1="490" x2="788"  y2="462" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="530" y1="510" x2="445"  y2="560" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="688" y1="510" x2="788"  y2="562" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="610" y1="522" x2="610"  y2="608" stroke="#94a3b8" stroke-width="1.1"/>
+
+  <!-- ORDER_ITEMS attrs -->
+  <line x1="960" y1="479" x2="878"  y2="382" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="1000" y1="478" x2="1000" y2="375" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="1040" y1="479" x2="1118" y2="382" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="920"  y1="510" x2="878"  y2="610" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="1000" y1="522" x2="1000" y2="610" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="1080" y1="510" x2="1120" y2="610" stroke="#94a3b8" stroke-width="1.1"/>
+
+  <!-- PRODUCTS attrs -->
+  <line x1="1348" y1="480" x2="1258" y2="385" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="1472" y1="480" x2="1568" y2="382" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="1490" y1="492" x2="1590" y2="490" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="1490" y1="508" x2="1590" y2="588" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="1330" y1="495" x2="1228" y2="495" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="1410" y1="522" x2="1410" y2="618" stroke="#94a3b8" stroke-width="1.1"/>
+
+  <!-- CATEGORIES attrs -->
+  <line x1="1368" y1="216" x2="1272" y2="138" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="1410" y1="213" x2="1410" y2="130" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="1452" y1="216" x2="1548" y2="138" stroke="#94a3b8" stroke-width="1.1"/>
+
+  <!-- PRODUCT_RATINGS attrs -->
+  <line x1="672"  y1="878" x2="590"  y2="802" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="720"  y1="878" x2="720"  y2="802" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="768"  y1="878" x2="848"  y2="802" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="650"  y1="902" x2="592"  y2="982" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="790"  y1="902" x2="848"  y2="982" stroke="#94a3b8" stroke-width="1.1"/>
+
+
+  <!-- ==================================================================
+       CARDINALITY LABELS
+       ================================================================== -->
+  <!-- User → melakukan -->
+  <text x="296" y="492" font-size="14" font-weight="700" fill="#1d4ed8" font-family="Inter">1</text>
+  <!-- melakukan → Orders -->
+  <text x="452" y="492" font-size="14" font-weight="700" fill="#dc2626" font-family="Inter">N</text>
+
+  <!-- Orders → berisi -->
+  <text x="708" y="492" font-size="14" font-weight="700" fill="#1d4ed8" font-family="Inter">1</text>
+  <!-- berisi → Order_Items -->
+  <text x="844" y="492" font-size="14" font-weight="700" fill="#dc2626" font-family="Inter">N</text>
+
+  <!-- Order_Items → merujuk -->
+  <text x="1102" y="492" font-size="14" font-weight="700" fill="#dc2626" font-family="Inter">N</text>
+  <!-- merujuk → Products -->
+  <text x="1314" y="492" font-size="14" font-weight="700" fill="#1d4ed8" font-family="Inter">1</text>
+
+  <!-- Products → termasuk -->
+  <text x="1418" y="458" font-size="14" font-weight="700" fill="#dc2626" font-family="Inter">N</text>
+  <!-- termasuk → Categories -->
+  <text x="1418" y="278" font-size="14" font-weight="700" fill="#1d4ed8" font-family="Inter">1</text>
+
+  <!-- User → memberi -->
+  <text x="200" y="730" font-size="14" font-weight="700" fill="#1d4ed8" font-family="Inter">1</text>
+  <!-- memberi → Product_Ratings -->
+  <text x="595" y="872" font-size="14" font-weight="700" fill="#dc2626" font-family="Inter">N</text>
+
+  <!-- Products → dinilai -->
+  <text x="1418" y="730" font-size="14" font-weight="700" fill="#1d4ed8" font-family="Inter">1</text>
+  <!-- dinilai → Product_Ratings -->
+  <text x="820" y="872" font-size="14" font-weight="700" fill="#dc2626" font-family="Inter">N</text>
+
+
+  <!-- ==================================================================
+       RELATIONSHIP DIAMONDS
+       ================================================================== -->
+
+  <!-- melakukan (center 400, 500) hw=70 hh=42 -->
+  <polygon points="400,458 470,500 400,542 330,500" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="400" y="496" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e" font-family="Inter">melakukan</text>
+  <text x="400" y="510" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e" font-family="Inter">pesanan</text>
+
+  <!-- berisi (center 800, 500) hw=60 hh=42 -->
+  <polygon points="800,458 860,500 800,542 740,500" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="800" y="503" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e" font-family="Inter">berisi</text>
+
+  <!-- merujuk ke (center 1210, 500) hw=70 hh=42 -->
+  <polygon points="1210,458 1280,500 1210,542 1140,500" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="1210" y="496" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e" font-family="Inter">merujuk</text>
+  <text x="1210" y="510" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e" font-family="Inter">ke</text>
+
+  <!-- termasuk dalam (center 1410, 368) hw=78 hh=40 -->
+  <polygon points="1410,328 1488,368 1410,408 1332,368" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="1410" y="364" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e" font-family="Inter">termasuk</text>
+  <text x="1410" y="378" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e" font-family="Inter">dalam</text>
+
+  <!-- memberi (center 402, 830) hw=70 hh=40 -->
+  <polygon points="402,790 472,830 402,870 332,830" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="402" y="826" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e" font-family="Inter">memberi</text>
+  <text x="402" y="840" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e" font-family="Inter">ulasan</text>
+
+  <!-- dinilai di (center 1078, 830) hw=70 hh=40 -->
+  <polygon points="1078,790 1148,830 1078,870 1008,830" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="1078" y="826" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e" font-family="Inter">dinilai</text>
+  <text x="1078" y="840" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e" font-family="Inter">oleh</text>
+
+
+  <!-- ==================================================================
+       ENTITIES
+       ================================================================== -->
+
+  <!-- USER  center (192, 500) w=160 h=44 -->
+  <rect x="112" y="478" width="160" height="44" rx="4" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2.5"/>
+  <text x="192" y="503" text-anchor="middle" dominant-baseline="middle" font-size="15" font-weight="700" fill="#1e3a8a" font-family="Inter">USER</text>
+
+  <!-- ORDERS  center (610, 500) w=160 h=44 -->
+  <rect x="530" y="478" width="160" height="44" rx="4" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2.5"/>
+  <text x="610" y="503" text-anchor="middle" dominant-baseline="middle" font-size="15" font-weight="700" fill="#1e3a8a" font-family="Inter">ORDERS</text>
+
+  <!-- ORDER_ITEMS  center (1000, 500) w=180 h=44  (double = junction) -->
+  <rect x="910" y="478" width="180" height="44" rx="4" fill="#ede9fe" stroke="#6d28d9" stroke-width="2.5"/>
+  <rect x="915" y="483" width="170" height="34" rx="3" fill="none" stroke="#6d28d9" stroke-width="1.3"/>
+  <text x="1000" y="503" text-anchor="middle" dominant-baseline="middle" font-size="13" font-weight="700" fill="#3b0764" font-family="Inter">ORDER_ITEMS</text>
+
+  <!-- PRODUCTS  center (1410, 500) w=160 h=44 -->
+  <rect x="1330" y="478" width="160" height="44" rx="4" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2.5"/>
+  <text x="1410" y="503" text-anchor="middle" dominant-baseline="middle" font-size="15" font-weight="700" fill="#1e3a8a" font-family="Inter">PRODUCTS</text>
+
+  <!-- CATEGORIES  center (1410, 233) w=170 h=44 -->
+  <rect x="1325" y="211" width="170" height="44" rx="4" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2.5"/>
+  <text x="1410" y="236" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="700" fill="#1e3a8a" font-family="Inter">CATEGORIES</text>
+
+  <!-- PRODUCT_RATINGS  center (720, 900) w=200 h=44  (double = junction) -->
+  <rect x="620" y="878" width="200" height="44" rx="4" fill="#ede9fe" stroke="#6d28d9" stroke-width="2.5"/>
+  <rect x="625" y="883" width="190" height="34" rx="3" fill="none" stroke="#6d28d9" stroke-width="1.3"/>
+  <text x="720" y="902" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#3b0764" font-family="Inter">PRODUCT_RATINGS</text>
+
+
+  <!-- ==================================================================
+       ATTRIBUTES — USER  (center 192, 500)
+       ================================================================== -->
+
+  <!-- id_user PK (atas-kiri) -->
+  <ellipse cx="105" cy="360" rx="55" ry="22" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
+  <text x="105" y="356" text-anchor="middle" font-size="11" font-weight="700" fill="#713f12" font-family="Inter">id_user</text>
+  <line x1="56" y1="363" x2="154" y2="363" stroke="#ca8a04" stroke-width="1.8"/>
+  <text x="105" y="373" text-anchor="middle" font-size="9" fill="#713f12" font-family="Inter">(PK)</text>
+
+  <!-- nama (atas-tengah) -->
+  <ellipse cx="192" cy="352" rx="44" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="192" y="355" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#14532d" font-family="Inter">nama</text>
+
+  <!-- email (atas-kanan) -->
+  <ellipse cx="325" cy="362" rx="44" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="325" y="365" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#14532d" font-family="Inter">email</text>
+
+  <!-- password (kiri) -->
+  <ellipse cx="38" cy="462" rx="50" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="38" y="465" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#14532d" font-family="Inter">password</text>
+
+  <!-- telepon (kanan) -->
+  <ellipse cx="372" cy="458" rx="48" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="372" y="461" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#14532d" font-family="Inter">telepon</text>
+
+  <!-- alamat (bawah-kiri) -->
+  <ellipse cx="38" cy="558" rx="44" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="38" y="561" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#14532d" font-family="Inter">alamat</text>
+
+  <!-- role (bawah) -->
+  <ellipse cx="192" cy="618" rx="38" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="192" y="621" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#14532d" font-family="Inter">role</text>
+
+
+  <!-- ==================================================================
+       ATTRIBUTES — ORDERS  (center 610, 500)
+       ================================================================== -->
+
+  <!-- id_pesanan PK (atas-kiri) -->
+  <ellipse cx="448" cy="352" rx="62" ry="22" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
+  <text x="448" y="348" text-anchor="middle" font-size="11" font-weight="700" fill="#713f12" font-family="Inter">id_pesanan</text>
+  <line x1="392" y1="356" x2="506" y2="356" stroke="#ca8a04" stroke-width="1.8"/>
+  <text x="448" y="366" text-anchor="middle" font-size="9" fill="#713f12" font-family="Inter">(PK)</text>
+
+  <!-- kode_pesanan (atas) -->
+  <ellipse cx="610" cy="342" rx="66" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="610" y="345" text-anchor="middle" dominant-baseline="middle" font-size="10.5" fill="#14532d" font-family="Inter">kode_pesanan</text>
+
+  <!-- user_id FK (atas-kanan) -->
+  <ellipse cx="750" cy="352" rx="50" ry="22" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="750" y="348" text-anchor="middle" font-size="11" fill="#7c2d12" font-family="Inter">user_id</text>
+  <text x="750" y="362" text-anchor="middle" font-size="9" fill="#ea580c" font-family="Inter">(FK)</text>
+
+  <!-- metode_bayar (kiri) -->
+  <ellipse cx="436" cy="458" rx="60" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="436" y="461" text-anchor="middle" dominant-baseline="middle" font-size="10.5" fill="#14532d" font-family="Inter">metode_bayar</text>
+
+  <!-- total_amount (kanan) -->
+  <ellipse cx="798" cy="458" rx="58" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="798" y="461" text-anchor="middle" dominant-baseline="middle" font-size="10.5" fill="#14532d" font-family="Inter">total_amount</text>
+
+  <!-- status (bawah-kiri) -->
+  <ellipse cx="436" cy="562" rx="40" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="436" y="565" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#14532d" font-family="Inter">status</text>
+
+  <!-- grand_total (bawah-kanan) -->
+  <ellipse cx="798" cy="565" rx="58" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="798" y="568" text-anchor="middle" dominant-baseline="middle" font-size="10.5" fill="#14532d" font-family="Inter">grand_total</text>
+
+  <!-- alamat_kirim (bawah) -->
+  <ellipse cx="610" cy="630" rx="64" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="610" y="633" text-anchor="middle" dominant-baseline="middle" font-size="10.5" fill="#14532d" font-family="Inter">alamat_kirim</text>
+
+
+  <!-- ==================================================================
+       ATTRIBUTES — ORDER_ITEMS  (center 1000, 500)
+       ================================================================== -->
+
+  <!-- id_item PK (atas-kiri) -->
+  <ellipse cx="878" cy="355" rx="52" ry="22" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
+  <text x="878" y="351" text-anchor="middle" font-size="11" font-weight="700" fill="#713f12" font-family="Inter">id_item</text>
+  <line x1="832" y1="358" x2="926" y2="358" stroke="#ca8a04" stroke-width="1.8"/>
+  <text x="878" y="368" text-anchor="middle" font-size="9" fill="#713f12" font-family="Inter">(PK)</text>
+
+  <!-- order_id FK (atas-tengah) -->
+  <ellipse cx="1000" cy="348" rx="52" ry="20" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="1000" y="344" text-anchor="middle" font-size="11" fill="#7c2d12" font-family="Inter">order_id</text>
+  <text x="1000" y="357" text-anchor="middle" font-size="9" fill="#ea580c" font-family="Inter">(FK)</text>
+
+  <!-- product_id FK (atas-kanan) -->
+  <ellipse cx="1120" cy="355" rx="55" ry="22" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="1120" y="351" text-anchor="middle" font-size="11" fill="#7c2d12" font-family="Inter">product_id</text>
+  <text x="1120" y="364" text-anchor="middle" font-size="9" fill="#ea580c" font-family="Inter">(FK)</text>
+
+  <!-- subtotal (bawah-kiri) -->
+  <ellipse cx="878" cy="632" rx="46" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="878" y="635" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#14532d" font-family="Inter">subtotal</text>
+
+  <!-- harga (bawah-tengah) -->
+  <ellipse cx="1000" cy="638" rx="40" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="1000" y="641" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#14532d" font-family="Inter">harga</text>
+
+  <!-- jumlah (bawah-kanan) -->
+  <ellipse cx="1122" cy="632" rx="42" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="1122" y="635" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#14532d" font-family="Inter">jumlah</text>
+
+
+  <!-- ==================================================================
+       ATTRIBUTES — PRODUCTS  (center 1410, 500)
+       ================================================================== -->
+
+  <!-- id_produk PK (atas-kiri) -->
+  <ellipse cx="1255" cy="358" rx="60" ry="22" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
+  <text x="1255" y="354" text-anchor="middle" font-size="11" font-weight="700" fill="#713f12" font-family="Inter">id_produk</text>
+  <line x1="202" y1="362" x2="318" y2="362" stroke="#ca8a04" stroke-width="1.8" transform="translate(1053,0)"/>
+  <text x="1255" y="371" text-anchor="middle" font-size="9" fill="#713f12" font-family="Inter">(PK)</text>
+
+  <!-- nama_produk (atas-kanan) -->
+  <ellipse cx="1570" cy="356" rx="60" ry="22" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="1570" y="359" text-anchor="middle" dominant-baseline="middle" font-size="10.5" fill="#14532d" font-family="Inter">nama_produk</text>
+
+  <!-- harga (kanan-atas) -->
+  <ellipse cx="1600" cy="490" rx="40" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="1600" y="493" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#14532d" font-family="Inter">harga</text>
+
+  <!-- stok (kanan-bawah) -->
+  <ellipse cx="1600" cy="590" rx="38" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="1600" y="593" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#14532d" font-family="Inter">stok</text>
+
+  <!-- category_id FK (kiri) -->
+  <ellipse cx="1220" cy="495" rx="60" ry="22" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="1220" y="491" text-anchor="middle" font-size="10.5" fill="#7c2d12" font-family="Inter">category_id</text>
+  <text x="1220" y="504" text-anchor="middle" font-size="9" fill="#ea580c" font-family="Inter">(FK)</text>
+
+  <!-- satuan (bawah) -->
+  <ellipse cx="1410" cy="640" rx="44" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="1410" y="643" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#14532d" font-family="Inter">satuan</text>
+
+
+  <!-- ==================================================================
+       ATTRIBUTES — CATEGORIES  (center 1410, 233)
+       ================================================================== -->
+
+  <!-- id_kategori PK (atas-kiri) -->
+  <ellipse cx="1272" cy="110" rx="65" ry="22" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
+  <text x="1272" y="106" text-anchor="middle" font-size="11" font-weight="700" fill="#713f12" font-family="Inter">id_kategori</text>
+  <line x1="213" y1="114" x2="333" y2="114" stroke="#ca8a04" stroke-width="1.8" transform="translate(1059,0)"/>
+  <text x="1272" y="124" text-anchor="middle" font-size="9" fill="#713f12" font-family="Inter">(PK)</text>
+
+  <!-- nama_kategori (atas) -->
+  <ellipse cx="1410" cy="102" rx="68" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="1410" y="105" text-anchor="middle" dominant-baseline="middle" font-size="10.5" fill="#14532d" font-family="Inter">nama_kategori</text>
+
+  <!-- slug (atas-kanan) -->
+  <ellipse cx="1552" cy="110" rx="38" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="1552" y="113" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#14532d" font-family="Inter">slug</text>
+
+
+  <!-- ==================================================================
+       ATTRIBUTES — PRODUCT_RATINGS  (center 720, 900)
+       ================================================================== -->
+
+  <!-- id_rating PK (atas-kiri) -->
+  <ellipse cx="590" cy="772" rx="55" ry="22" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
+  <text x="590" y="768" text-anchor="middle" font-size="11" font-weight="700" fill="#713f12" font-family="Inter">id_rating</text>
+  <line x1="541" y1="776" x2="641" y2="776" stroke="#ca8a04" stroke-width="1.8"/>
+  <text x="590" y="786" text-anchor="middle" font-size="9" fill="#713f12" font-family="Inter">(PK)</text>
+
+  <!-- product_id FK (atas-tengah) -->
+  <ellipse cx="720" cy="766" rx="55" ry="20" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="720" y="762" text-anchor="middle" font-size="11" fill="#7c2d12" font-family="Inter">product_id</text>
+  <text x="720" y="775" text-anchor="middle" font-size="9" fill="#ea580c" font-family="Inter">(FK)</text>
+
+  <!-- user_id FK (atas-kanan) -->
+  <ellipse cx="852" cy="772" rx="50" ry="20" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="852" y="768" text-anchor="middle" font-size="11" fill="#7c2d12" font-family="Inter">user_id</text>
+  <text x="852" y="781" text-anchor="middle" font-size="9" fill="#ea580c" font-family="Inter">(FK)</text>
+
+  <!-- rating (bawah-kiri) -->
+  <ellipse cx="590" cy="1005" rx="40" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="590" y="1008" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#14532d" font-family="Inter">rating</text>
+
+  <!-- ulasan (bawah-kanan) -->
+  <ellipse cx="852" cy="1005" rx="40" ry="20" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="852" y="1008" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#14532d" font-family="Inter">ulasan</text>
+
+
+  <!-- ==================================================================
+       WATERMARK / CAPTION
+       ================================================================== -->
+  <text x="1860" y="1068" text-anchor="end" font-size="10" fill="#cbd5e1" font-family="Inter">ERD Toko Sayur Online · Chen Notation</text>
+
+  </svg>
+  </div><!-- erd-canvas -->
+</div><!-- erd-wrap -->
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+DROP DATABASE IF EXISTS toko_sayur; CREATE DATABASE toko_sayur;
